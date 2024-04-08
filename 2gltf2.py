@@ -1,18 +1,18 @@
-# 
+#
 # The MIT License (MIT)
 #
 # Copyright (c) since 2017 UX3D GmbH
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -20,7 +20,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-# 
+#
 
 #
 # Imports
@@ -63,22 +63,22 @@ for current_argument in sys.argv:
     #
 
     if current_extension == ".abc":
-        bpy.ops.wm.alembic_import(filepath=current_argument)    
+        bpy.ops.wm.alembic_import(filepath=current_argument)
 
     if current_extension == ".blend":
         bpy.ops.wm.open_mainfile(filepath=current_argument)
 
     if current_extension == ".dae":
-        bpy.ops.wm.collada_import(filepath=current_argument)    
+        bpy.ops.wm.collada_import(filepath=current_argument)
 
     if current_extension == ".fbx":
-        bpy.ops.import_scene.fbx(filepath=current_argument)    
+        bpy.ops.import_scene.fbx(filepath=current_argument)
 
     if current_extension == ".obj":
-        bpy.ops.import_scene.obj(filepath=current_argument)    
+        bpy.ops.import_scene.obj(filepath=current_argument)
 
     if current_extension == ".ply":
-        bpy.ops.import_mesh.ply(filepath=current_argument)    
+        bpy.ops.import_mesh.ply(filepath=current_argument)
 
     if current_extension == ".stl":
         bpy.ops.import_mesh.stl(filepath=current_argument)
@@ -91,6 +91,14 @@ for current_argument in sys.argv:
 
     #
 
-    export_file = current_directory + "/" + current_basename + ".gltf"
+    new_directory = os.path.join(current_directory, current_basename)
+
+    # Check if the directory exists, and if not, create it.
+    if not os.path.exists(new_directory):
+        os.makedirs(new_directory)
+
+    # Update the export_file path to include the new directory.
+    export_file = os.path.join(new_directory, current_basename + ".gltf")
+
     print("Writing: '" + export_file + "'")
-    bpy.ops.export_scene.gltf(filepath=export_file)
+    bpy.ops.export_scene.gltf(filepath=export_file, export_format='GLTF_SEPARATE')
